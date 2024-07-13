@@ -52,5 +52,6 @@ jobs:
             git push
           else
             echo "No JSON files to commit"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
