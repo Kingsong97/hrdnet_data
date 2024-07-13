@@ -33,18 +33,24 @@ jobs:
       - name: List files in current directory
         run: ls -la
 
-      - name: List files in hrdnet_data directory
+      - name: List files in hrdnet_data directory before script
         run: ls -la ./hrdnet_data
 
       - name: Run list data script
         run: python3 ./hrdnet_data/detail.py
 
-      - name: Commit and push changes
+      - name: List files in hrdnet_data directory after script
+        run: ls -la ./hrdnet_data
+
+      - name: Commit and push changes if JSON files exist
         run: |
           git config --global user.email "kingsongsm97@gmail.com"
           git config --global user.name "Kingsong97"
-          git add ./hrdnet_data/*.json # 생성된 JSON 파일을 추가
-          git commit -m "Update list data"
-          git push
+          if ls ./hrdnet_data/*.json 1> /dev/null 2>&1; then
+            git add ./hrdnet_data/*.json
+            git commit -m "Update list data"
+            git push
+          else
+            echo "No JSON files to commit"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
